@@ -4,6 +4,7 @@ import { __ } from '@wordpress/i18n';
 import { PanelBody, TextareaControl } from '@wordpress/components';
 import AttributeControls from '../components/attribute-controls';
 import LabelControl from '../components/label-control';
+import MultiTextControl from '../components/multi-text-control';
 
 type Attributes = {
 	label: string;
@@ -91,6 +92,15 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 				onChange={(newLabel): void =>
 					setAttributes({ label: newLabel })
 				}
+			/>
+			<MultiTextControl
+				value={options.map(({ option }) => option)}
+				onChange={(strs) => {
+					const newOptions = strs.map((s) => {
+						return { option: s };
+					});
+					setAttributes({ options: newOptions });
+				}}
 			/>
 			<TextareaControl
 				value={options.map(({ option }) => option).join('\n')}
