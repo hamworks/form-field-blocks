@@ -1,13 +1,9 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls, RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	TextControl,
-	SelectControl,
-	CheckboxControl,
-} from '@wordpress/components';
-import AttributeControls from './components/attribute-controls';
+import { PanelBody, SelectControl } from '@wordpress/components';
+import AttributeControls from '../components/attribute-controls';
+import LabelControl from '../components/label-control';
 
 type Attributes = {
 	label: string;
@@ -96,11 +92,11 @@ registerBlockType<Attributes>('form-field-blocks/input', {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<RichText
-				className="wp-block-form-field-blocks-form__label"
-				tagName="span"
-				value={label}
-				onChange={(value): void => setAttributes({ label: value })}
+			<LabelControl
+				text={label}
+				onChange={(newLabel): void =>
+					setAttributes({ label: newLabel })
+				}
 			/>
 			<input type={type} name={name} disabled={true} />
 		</div>

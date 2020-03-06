@@ -1,13 +1,9 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls, RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import {
-	PanelBody,
-	TextControl,
-	TextareaControl,
-	CheckboxControl,
-} from '@wordpress/components';
-import AttributeControls from './components/attribute-controls';
+import { PanelBody, TextareaControl } from '@wordpress/components';
+import AttributeControls from '../components/attribute-controls';
+import LabelControl from '../components/label-control';
 
 type Attributes = {
 	label: string;
@@ -18,8 +14,8 @@ type Attributes = {
 	required: boolean;
 };
 
-registerBlockType<Attributes>('form-field-blocks/radio', {
-	title: __('Radios', 'form-field-blocks'),
+registerBlockType<Attributes>('form-field-blocks/select', {
+	title: __('Select', 'form-field-blocks'),
 	description: __('Enter options with line breaks.', 'form-field-blocks'),
 	parent: ['form-field-blocks/form'],
 	category: 'layout',
@@ -39,26 +35,24 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 			type: 'string',
 			source: 'html',
 			selector: '.wp-block-form-field-blocks-form__label',
-			default: 'Radio',
+			default: 'label',
 		},
 		required: {
 			type: 'boolean',
 			source: 'attribute',
-			selector: 'input',
+			selector: 'select',
 			attribute: 'required',
 			default: false,
 		},
 		options: {
 			type: 'array',
 			source: 'query',
-			selector: '.wp-block-form-field-blocks-form__radios input',
+			selector: 'option',
 			default: [],
 			query: {
 				option: {
 					type: 'string',
-					source: 'attribute',
-					selector: 'input',
-					attribute: 'value',
+					source: 'html',
 				},
 			},
 		},
@@ -67,7 +61,7 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 			source: 'attribute',
 			selector: 'input',
 			attribute: 'name',
-			default: 'radio',
+			default: 'text',
 		},
 	},
 	edit: ({
@@ -90,11 +84,11 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<RichText
-				className="wp-block-form-field-blocks-form__label"
-				tagName="span"
-				value={label}
-				onChange={(value): void => setAttributes({ label: value })}
+			<LabelControl
+				text={label}
+				onChange={(newLabel): void =>
+					setAttributes({ label: newLabel })
+				}
 			/>
 			<TextareaControl
 				value={options.map(({ option }) => option).join('\n')}
@@ -109,24 +103,18 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 	),
 	save: ({ attributes: { label, name, options, required } }) => (
 		<div className="wp-block-form-field-blocks-form__row">
-			<span className="wp-block-form-field-blocks-form__label">
-				{label}
-			</span>
-			<div className="wp-block-form-field-blocks-form__radios">
-				{options
-					.filter(({ option }) => option)
-					.map(({ option }, index) => (
-						<label key={index}>
-							<input
-								type="radio"
-								name={name}
-								required={required}
-								value={option}
-							/>
-							<span>{option}</span>
-						</label>
-					))}
-			</div>
+			<label>
+				<span className="wp-block-form-field-blocks-form__label">
+					{label}
+				</span>
+				<select name={name} required={required}>
+					{options
+						.filter(({ option }) => option)
+						.map(({ option }, index) => (
+							<option key={index}>{option}</option>
+						))}
+				</select>
+			</label>
 		</div>
 	),
 });

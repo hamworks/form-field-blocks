@@ -1,1 +1,1 @@
-import './blocks/form';
+import './blocks';

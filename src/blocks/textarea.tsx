@@ -1,8 +1,9 @@
 import { registerBlockType } from '@wordpress/blocks';
 import { InspectorControls, RichText } from '@wordpress/block-editor';
 import { __ } from '@wordpress/i18n';
-import { CheckboxControl, PanelBody, TextControl } from '@wordpress/components';
-import AttributeControls from './components/attribute-controls';
+import { PanelBody } from '@wordpress/components';
+import AttributeControls from '../components/attribute-controls';
+import LabelControl from '../components/label-control';
 
 type Attributes = {
 	label: string;
@@ -68,10 +69,8 @@ registerBlockType<Attributes>('form-field-blocks/textarea', {
 					/>
 				</PanelBody>
 			</InspectorControls>
-			<RichText
-				className="wp-block-form-field-blocks-form__label"
-				tagName="span"
-				value={label}
+			<LabelControl
+				text={label}
 				onChange={(newLabel): void =>
 					setAttributes({ label: newLabel })
 				}

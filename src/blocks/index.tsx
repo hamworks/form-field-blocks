@@ -1,6 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import { registerBlockCollection } from '@wordpress/blocks';
+import './form';
+import './input';
+import './textarea';
+import './select';
+import './radio';
 
 if (registerBlockCollection) {
 	registerBlockCollection('form-field-blocks', {
@@ -18,9 +23,3 @@ if (registerBlockCollection) {
 		),
 	});
 }
-
-import './form';
-import './input';
-import './textarea';
-import './select';
-import './radio';
