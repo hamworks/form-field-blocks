@@ -1,4 +1,4 @@
-import { CheckboxControl, PanelBody, TextControl } from '@wordpress/components';
+import { CheckboxControl, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const AttributeControls: React.FC<{
