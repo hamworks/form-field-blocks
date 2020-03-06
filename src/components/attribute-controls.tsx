@@ -1,4 +1,4 @@
-import { CheckboxControl, TextControl } from '@wordpress/components';
+import { ToggleControl, TextControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 
 const AttributeControls: React.FC<{
@@ -14,7 +14,7 @@ const AttributeControls: React.FC<{
 				value={name}
 				onChange={onNameChange}
 			/>
-			<CheckboxControl
+			<ToggleControl
 				label={__('required attribute', 'form-field-blocks')}
 				checked={required}
 				onChange={onRequiredChange}

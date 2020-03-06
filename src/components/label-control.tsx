@@ -5,12 +5,14 @@ const LabelControl: React.FC<{
 	onChange(value: string): void;
 }> = ({ onChange, text }) => {
 	return (
-		<RichText
-			className="wp-block-form-field-blocks-form__label"
-			tagName="label"
-			value={text}
-			onChange={onChange}
-		/>
+		<label>
+			<RichText
+				className="wp-block-form-field-blocks-form__label"
+				value={text}
+				onChange={onChange}
+			/>
+		</label>
+
 	);
 };
 

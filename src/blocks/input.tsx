@@ -18,7 +18,7 @@ registerBlockType<Attributes>('form-field-blocks/input', {
 			type: 'string',
 			source: 'html',
 			selector: '.wp-block-form-field-blocks-form__label',
-			default: 'label',
+			default: 'Input',
 		},
 		required: {
 			type: 'boolean',

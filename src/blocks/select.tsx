@@ -26,7 +26,7 @@ registerBlockType<Attributes>('form-field-blocks/select', {
 			viewBox="0 0 24 24"
 			width="24"
 		>
-			<path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
+			<path d="M3 17h18v2H3zm16-5v1H5v-1h14m2-2H3v5h18v-5zM3 6h18v2H3z" />
 			<path d="M0 0h24v24H0z" fill="none" />
 		</svg>
 	),
@@ -35,7 +35,7 @@ registerBlockType<Attributes>('form-field-blocks/select', {
 			type: 'string',
 			source: 'html',
 			selector: '.wp-block-form-field-blocks-form__label',
-			default: 'label',
+			default: 'Select',
 		},
 		required: {
 			type: 'boolean',
