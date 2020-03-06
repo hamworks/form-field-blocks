@@ -1,0 +1,83 @@
+{
+    "name": "@hamworks/form-field-blocks",
+    "version": "0.0.1",
+    "author": "Hiroshi Urabe <urabe@ham.works> (https://ham.works)",
+    "license": "GPL-3.0+",
+    "main": "build/index.js",
+    "module": "build-module/index.js",
+    "types": "build-module/index.d.ts",
+    "scripts": {
+        "tsc": "tsc",
+        "env": "wp-scripts env",
+        "storybook": "start-storybook -p 6006",
+        "test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
+        "start": "npm run postcss -- -w & tsc --watch & wp-scripts start",
+        "build": "npm run postcss && tsc && wp-scripts build",
+        "postcss": "postcss ./src/[^_]*.css --dir ./build --verbose",
+        "lint": "wp-scripts lint-js --ext .js,.jsx,.ts,.tsx src/ --ignore-pattern 'src/@types/'",
+        "build-storybook": "build-storybook"
+    },
+    "repository": {
+        "url": "git@github.com:team-hamworks/form-field-blocks.git",
+        "type": "git"
+    },
+    "dependencies": {
+        "@babel/plugin-proposal-optional-chaining": "^7.8.3",
+        "@hamworks/wp-data": "^0.0.9",
+        "@types/lodash": "^4.14.149",
+        "@types/wordpress__block-editor": "^2.2.5",
+        "@types/wordpress__edit-post": "^3.5.1",
+        "@types/wordpress__i18n": "^3.4.0",
+        "@types/wordpress__plugins": "^2.3.4",
+        "@wordpress/components": "^9.2.3",
+        "react": "^16.13.0",
+        "react-dom": "^16.13.0"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.8.7",
+        "@babel/preset-typescript": "^7.8.3",
+        "@storybook/addon-a11y": "5.3.14",
+        "@storybook/addon-actions": "^5.3.14",
+        "@storybook/addon-docs": "5.3.14",
+        "@storybook/addon-knobs": "5.3.14",
+        "@storybook/addon-links": "^5.3.14",
+        "@storybook/addon-storyshots": "5.3.14",
+        "@storybook/addon-storysource": "5.3.14",
+        "@storybook/addon-viewport": "5.3.14",
+        "@storybook/addons": "^5.3.14",
+        "@storybook/react": "^5.3.14",
+        "@types/wordpress__core-data": "^2.4.1",
+        "@typescript-eslint/eslint-plugin": "^2.22.0",
+        "@typescript-eslint/parser": "^2.22.0",
+        "@wordpress/browserslist-config": "2.6.0",
+        "@wordpress/scripts": "^7.1.2",
+        "babel-loader": "^8.0.6",
+        "cssnano": "^4.1.10",
+        "postcss-cli": "^7.1.0",
+        "postcss-import": "^12.0.1",
+        "postcss-omit-import-tilde": "^1.0.1",
+        "postcss-preset-env": "^6.7.0",
+        "postcss-url": "^8.0.0",
+        "typescript": "^3.8.3"
+    },
+    "wp-env": {
+        "plugin-dir": "form-field-blocks",
+        "plugin-name": "form-field-blocks",
+        "welcome-build-command": "npm run start"
+    },
+    "release-it": {
+        "hooks": {
+            "before:bump": "npm run build",
+            "after:bump": "bash ./bin/create-release.sh ${version}"
+        },
+        "github": {
+            "release": true,
+            "assets": [
+                "form-field-blocks.zip"
+            ]
+        },
+        "npm": {
+            "publish": false
+        }
+    }
+}
