@@ -7,6 +7,7 @@ import {
 	TextareaControl,
 	CheckboxControl,
 } from '@wordpress/components';
+import AttributeControls from './components/attribute-controls';
 
 type Attributes = {
 	label: string;
@@ -71,69 +72,53 @@ registerBlockType<Attributes>('form-field-blocks/select', {
 		className,
 		setAttributes,
 		attributes: { label, options, name, required },
-	}) => {
-		return (
-			<div
-				className={`${className} wp-block-form-field-blocks-form__row`}
-			>
-				<InspectorControls>
-					<PanelBody title={'Input Option'}>
-						<TextControl
-							label="input name"
-							value={name}
-							onChange={(value): void =>
-								setAttributes({ name: value })
-							}
-						/>
-					</PanelBody>
-					<CheckboxControl
-						label="Required"
-						checked={required}
-						onChange={(value): void =>
-							setAttributes({ required: value })
+	}) => (
+		<div className={`${className} wp-block-form-field-blocks-form__row`}>
+			<InspectorControls>
+				<PanelBody title={__('Input option', 'form-field-blocks')}>
+					<AttributeControls
+						name={name}
+						required={required}
+						onNameChange={(newName): void =>
+							setAttributes({ name: newName })
+						}
+						onRequiredChange={(newRequired): void =>
+							setAttributes({ required: newRequired })
 						}
 					/>
-				</InspectorControls>
-				<label>
-					<RichText
-						className="wp-block-form-field-blocks-form__label"
-						tagName="span"
-						value={label}
-						onChange={(value): void =>
-							setAttributes({ label: value })
-						}
-					/>
-					<TextareaControl
-						value={options.map(({ option }) => option).join('\n')}
-						onChange={(value): void => {
-							const newOptions = value
-								.split(/\n/)
-								.map((option) => ({ option }));
-							setAttributes({ options: newOptions });
-						}}
-					/>
-				</label>
-			</div>
-		);
-	},
-	save: ({ attributes: { label, name, options, required } }) => {
-		return (
-			<div className="wp-block-form-field-blocks-form__row">
-				<label>
-					<>
-						<span className="wp-block-form-field-blocks-form__label">
-							{label}
-						</span>
-						<select name={name} required={required}>
-							{options
-								.filter(({ option }) => option)
-								.map(({ option }, index) => (
-									<option key={index}>{option}</option>
-								))}
-						</select>
-					</>
-				</label>
-			</div>
-		);
-	},
+				</PanelBody>
+			</InspectorControls>
+			<RichText
+				className="wp-block-form-field-blocks-form__label"
+				tagName="span"
+				value={label}
+				onChange={(value): void => setAttributes({ label: value })}
+			/>
+			<TextareaControl
+				value={options.map(({ option }) => option).join('\n')}
+				onChange={(value): void => {
+					const newOptions = value
+						.split(/\n/)
+						.map((option) => ({ option }));
+					setAttributes({ options: newOptions });
+				}}
+			/>
+		</div>
+	),
+	save: ({ attributes: { label, name, options, required } }) => (
+		<div className="wp-block-form-field-blocks-form__row">
+			<label>
+				<span className="wp-block-form-field-blocks-form__label">
+					{label}
+				</span>
+				<select name={name} required={required}>
+					{options
+						.filter(({ option }) => option)
+						.map(({ option }, index) => (
+							<option key={index}>{option}</option>
+						))}
+				</select>
+			</label>
+		</div>
+	),
 });

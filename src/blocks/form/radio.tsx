@@ -7,6 +7,7 @@ import {
 	TextareaControl,
 	CheckboxControl,
 } from '@wordpress/components';
+import AttributeControls from './components/attribute-controls';
 
 type Attributes = {
 	label: string;
@@ -50,12 +51,14 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 		options: {
 			type: 'array',
 			source: 'query',
-			selector: '.wp-block-form-field-blocks-form__radios label span',
+			selector: '.wp-block-form-field-blocks-form__radios input',
 			default: [],
 			query: {
 				option: {
 					type: 'string',
-					source: 'html',
+					source: 'attribute',
+					selector: 'input',
+					attribute: 'value',
 				},
 			},
 		},
@@ -71,77 +74,59 @@ registerBlockType<Attributes>('form-field-blocks/radio', {
 		className,
 		setAttributes,
 		attributes: { label, options, name, required },
-	}) => {
-		return (
-			<div
-				className={`${className} wp-block-form-field-blocks-form__row`}
-			>
-				<InspectorControls>
-					<PanelBody title={'Input Option'}>
-						<TextControl
-							label="input name"
-							value={name}
-							onChange={(value): void =>
-								setAttributes({ name: value })
-							}
-						/>
-					</PanelBody>
-					<CheckboxControl
-						label="Required"
-						checked={required}
-						onChange={(value): void =>
-							setAttributes({ required: value })
+	}) => (
+		<div className={`${className} wp-block-form-field-blocks-form__row`}>
+			<InspectorControls>
+				<PanelBody title={__('Input option', 'form-field-blocks')}>
+					<AttributeControls
+						name={name}
+						required={required}
+						onNameChange={(newName): void =>
+							setAttributes({ name: newName })
+						}
+						onRequiredChange={(newRequired): void =>
+							setAttributes({ required: newRequired })
 						}
 					/>
-				</InspectorControls>
-				<label>
-					<RichText
-						className="wp-block-form-field-blocks-form__label"
-						tagName="span"
-						value={label}
-						onChange={(value): void =>
-							setAttributes({ label: value })
-						}
-					/>
-					<TextareaControl
-						value={options.map(({ option }) => option).join('\n')}
-						onChange={(value): void => {
-							const newOptions = value
-								.split(/\n/)
-								.map((option) => ({ option }));
-							setAttributes({ options: newOptions });
-						}}
-					/>
-				</label>
+				</PanelBody>
+			</InspectorControls>
+			<RichText
+				className="wp-block-form-field-blocks-form__label"
+				tagName="span"
+				value={label}
+				onChange={(value): void => setAttributes({ label: value })}
+			/>
+			<TextareaControl
+				value={options.map(({ option }) => option).join('\n')}
+				onChange={(value): void => {
+					const newOptions = value
+						.split(/\n/)
+						.map((option) => ({ option }));
+					setAttributes({ options: newOptions });
+				}}
+			/>
+		</div>
+	),
+	save: ({ attributes: { label, name, options, required } }) => (
+		<div className="wp-block-form-field-blocks-form__row">
+			<span className="wp-block-form-field-blocks-form__label">
+				{label}
+			</span>
+			<div className="wp-block-form-field-blocks-form__radios">
+				{options
+					.filter(({ option }) => option)
+					.map(({ option }, index) => (
+						<label key={index}>
+							<input
+								type="radio"
+								name={name}
+								required={required}
+								value={option}
+							/>
+							<span>{option}</span>
+						</label>
+					))}
 			</div>
-		);
-	},
-	save: ({ attributes: { label, name, options, required } }) => {
-		return (
-			<div className="wp-block-form-field-blocks-form__row">
-				<div>
-					<>
-						<span className="wp-block-form-field-blocks-form__label">
-							{label}
-						</span>
-						<div className="wp-block-form-field-blocks-form__radios">
-							{options
-								.filter(({ option }) => option)
-								.map(({ option }, index) => (
-									<label key={index}>
-										<input
-											type="radio"
-											name={name}
-											required={required}
-											value={option}
-										/>
-										<span>{option}</span>
-									</label>
-								))}
-						</div>
-					</>
-				</div>
-			</div>
-		);
-	},
+		</div>
+	),
 });

@@ -7,13 +7,16 @@ import {
 	SelectControl,
 	CheckboxControl,
 } from '@wordpress/components';
+import AttributeControls from './components/attribute-controls';
 
-registerBlockType<{
+type Attributes = {
 	label: string;
 	type: string;
 	required: boolean;
 	name: string;
-}>('form-field-blocks/input', {
+};
+
+registerBlockType<Attributes>('form-field-blocks/input', {
 	attributes: {
 		label: {
 			type: 'string',
@@ -61,80 +64,55 @@ registerBlockType<{
 		className,
 		setAttributes,
 		attributes: { label, type, name, required },
-	}) => {
-		return (
-			<div
-				className={`${className} wp-block-form-field-blocks-form__row`}
-			>
-				<InspectorControls>
-					<PanelBody title={'Input Option'}>
-						<SelectControl
-							label="input type"
-							value={type}
-							options={[
-								{ label: 'text', value: 'text' },
-								{ label: 'email', value: 'email' },
-								{ label: 'date', value: 'date' },
-								{
-									label: 'datetime-local',
-									value: 'datetime-local',
-								},
-							]}
-							onChange={(newType): void =>
-								setAttributes({ type: newType })
-							}
-						/>
-						<TextControl
-							label="input name"
-							value={name}
-							onChange={(newName): void =>
-								setAttributes({ name: newName })
-							}
-						/>
-						<CheckboxControl
-							label="Required"
-							checked={required}
-							onChange={(newRequired): void =>
-								setAttributes({ required: newRequired })
-							}
-						/>
-					</PanelBody>
-				</InspectorControls>
-				<label>
-					<RichText
-						className="wp-block-form-field-blocks-form__label"
-						tagName="span"
-						value={label}
-						onChange={(value): void =>
-							setAttributes({ label: value })
+	}) => (
+		<div className={`${className} wp-block-form-field-blocks-form__row`}>
+			<InspectorControls>
+				<PanelBody title={__('Input option', 'form-field-blocks')}>
+					<SelectControl
+						label="input type"
+						value={type}
+						options={[
+							{ label: 'text', value: 'text' },
+							{ label: 'email', value: 'email' },
+							{ label: 'date', value: 'date' },
+							{
+								label: 'datetime-local',
+								value: 'datetime-local',
+							},
+						]}
+						onChange={(newType): void =>
+							setAttributes({ type: newType })
 						}
 					/>
-					<input type={type} name={name} disabled={true} />
-				</label>
-			</div>
-		);
-	},
-	save: ({ attributes: { label, type, name, required } }) => {
-		return (
-			<div className="wp-block-form-field-blocks-form__row">
-				<label>
-					{required ? (
-						<>
-							<span className="wp-block-form-field-blocks-form__label">
-								{label}
-							</span>
-							<input type={type} name={name} required />
-						</>
-					) : (
-						<>
-							<span className="wp-block-form-field-blocks-form__label">
-								{label}
-							</span>
-							<input type={type} name={name} />
-						</>
-					)}
-				</label>
-			</div>
-		);
-	},
+					<AttributeControls
+						name={name}
+						required={required}
+						onNameChange={(newName): void =>
+							setAttributes({ name: newName })
+						}
+						onRequiredChange={(newRequired): void =>
+							setAttributes({ required: newRequired })
+						}
+					/>
+				</PanelBody>
+			</InspectorControls>
+			<RichText
+				className="wp-block-form-field-blocks-form__label"
+				tagName="span"
+				value={label}
+				onChange={(value): void => setAttributes({ label: value })}
+			/>
+			<input type={type} name={name} disabled={true} />
+		</div>
+	),
+	save: ({ attributes: { label, type, name, required } }) => (
+		<div className="wp-block-form-field-blocks-form__row">
+			<label>
+				<span className="wp-block-form-field-blocks-form__label">
+					{label}
+				</span>
+				<input type={type} name={name} required={required} />
+			</label>
+		</div>
+	),
 });
