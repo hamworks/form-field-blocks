@@ -73,19 +73,25 @@ registerBlockType<Attributes>('form-field-blocks/select', {
 		attributes: { label, options, name, required },
 	}) => {
 		return (
-			<div className="wp-block-form-field-blocks-form__row">
+			<div
+				className={`${className} wp-block-form-field-blocks-form__row`}
+			>
 				<InspectorControls>
 					<PanelBody title={'Input Option'}>
 						<TextControl
 							label="input name"
 							value={name}
-							onChange={(name) => setAttributes({ name })}
+							onChange={(value): void =>
+								setAttributes({ name: value })
+							}
 						/>
 					</PanelBody>
 					<CheckboxControl
 						label="Required"
 						checked={required}
-						onChange={(required) => setAttributes({ required })}
+						onChange={(value): void =>
+							setAttributes({ required: value })
+						}
 					/>
 				</InspectorControls>
 				<label>
@@ -93,15 +99,17 @@ registerBlockType<Attributes>('form-field-blocks/select', {
 						className="wp-block-form-field-blocks-form__label"
 						tagName="span"
 						value={label}
-						onChange={(label) => setAttributes({ label })}
+						onChange={(value): void =>
+							setAttributes({ label: value })
+						}
 					/>
 					<TextareaControl
 						value={options.map(({ option }) => option).join('\n')}
-						onChange={(value) => {
-							const options = value
+						onChange={(value): void => {
+							const newOptions = value
 								.split(/\n/)
-								.map((value) => ({ option: value }));
-							setAttributes({ options });
+								.map((option) => ({ option }));
+							setAttributes({ options: newOptions });
 						}}
 					/>
 				</label>

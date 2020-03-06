@@ -7,4 +7,8 @@ module.exports = {
 		"plugin:@typescript-eslint/eslint-recommended",
 		"plugin:@typescript-eslint/recommended",
 	],
+	"rules": {
+		"jsx-a11y/label-has-for": "off",
+		"jsx-a11y/label-has-associated-control": "off"
+	},
 };

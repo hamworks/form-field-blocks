@@ -49,7 +49,9 @@ registerBlockType<{ action: string; submit: string }>(
 							<TextControl
 								label="form action url"
 								value={action}
-								onChange={(action) => setAttributes({ action })}
+								onChange={(newAction): void => {
+									setAttributes({ action: newAction });
+								}}
 							/>
 						</PanelBody>
 					</InspectorControls>
@@ -62,9 +64,9 @@ registerBlockType<{ action: string; submit: string }>(
 									className="wp-block-button__link"
 									tagName={'button'}
 									value={submit}
-									onChange={(submit) =>
-										setAttributes({ submit })
-									}
+									onChange={(newSubmit): void => {
+										setAttributes({ submit: newSubmit });
+									}}
 								/>
 							</div>
 						</div>

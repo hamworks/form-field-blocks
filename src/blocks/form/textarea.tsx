@@ -48,20 +48,24 @@ registerBlockType<{ label: string; name: string; required: boolean }>(
 			attributes: { label, name, required },
 		}) => {
 			return (
-				<div className="wp-block-form-field-blocks-form__row">
+				<div
+					className={`${className} wp-block-form-field-blocks-form__row`}
+				>
 					<InspectorControls>
 						<PanelBody title={'textarea option'}>
 							<TextControl
 								label="input name"
 								value={name}
-								onChange={(name) => setAttributes({ name })}
+								onChange={(newName): void => {
+									setAttributes({ name: newName });
+								}}
 							/>
 							<CheckboxControl
 								label="Required"
 								checked={required}
-								onChange={(required) =>
-									setAttributes({ required })
-								}
+								onChange={(newRequired): void => {
+									setAttributes({ required: newRequired });
+								}}
 							/>
 						</PanelBody>
 					</InspectorControls>
@@ -70,7 +74,9 @@ registerBlockType<{ label: string; name: string; required: boolean }>(
 							className="wp-block-form-field-blocks-form__label"
 							tagName="span"
 							value={label}
-							onChange={(label) => setAttributes({ label })}
+							onChange={(newLabel): void =>
+								setAttributes({ label: newLabel })
+							}
 						/>
 						<textarea name={name} disabled={true} />
 					</label>

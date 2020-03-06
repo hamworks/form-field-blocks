@@ -1,26 +1,24 @@
 {
     "name": "@hamworks/form-field-blocks",
     "version": "0.0.1",
+    "description": "form field block for Block Editor.",
     "author": "Hiroshi Urabe <urabe@ham.works> (https://ham.works)",
-    "license": "GPL-3.0+",
-    "main": "build/index.js",
-    "module": "build-module/index.js",
-    "types": "build-module/index.d.ts",
-    "scripts": {
-        "tsc": "tsc",
-        "env": "wp-scripts env",
-        "storybook": "start-storybook -p 6006",
-        "test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
-        "start": "npm run postcss -- -w & tsc --watch & wp-scripts start",
-        "build": "npm run postcss && tsc && wp-scripts build",
-        "postcss": "postcss ./src/[^_]*.css --dir ./build --verbose",
-        "lint": "wp-scripts lint-js --ext .js,.jsx,.ts,.tsx src/ --ignore-pattern 'src/@types/'",
-        "build-storybook": "build-storybook"
-    },
+    "license": "GPL-2.0-or-later",
+    "keywords": [
+        "WordPress",
+        "editor"
+    ],
+    "homepage": "https://github.com/team-hamworks/form-field-blocks/",
     "repository": {
         "url": "git@github.com:team-hamworks/form-field-blocks.git",
         "type": "git"
     },
+    "bugs": {
+        "url": "https://github.com/team-hamworks/form-field-blocks/issues"
+    },
+    "main": "build/index.js",
+    "module": "build-module/index.js",
+    "types": "build-module/index.d.ts",
     "dependencies": {
         "@babel/plugin-proposal-optional-chaining": "^7.8.3",
         "@hamworks/wp-data": "^0.0.9",
@@ -53,12 +51,39 @@
         "@wordpress/scripts": "^7.1.2",
         "babel-loader": "^8.0.6",
         "cssnano": "^4.1.10",
+        "husky": "^4.2.3",
+        "lint-staged": "^10.0.8",
         "postcss-cli": "^7.1.0",
         "postcss-import": "^12.0.1",
         "postcss-omit-import-tilde": "^1.0.1",
         "postcss-preset-env": "^6.7.0",
         "postcss-url": "^8.0.0",
         "typescript": "^3.8.3"
+    },
+    "scripts": {
+        "tsc": "tsc",
+        "env": "wp-scripts env",
+        "storybook": "start-storybook -p 6006",
+        "test": "wp-scripts test-unit-js --config tests/js/jest.config.json",
+        "start": "npm run postcss -- -w & tsc --watch & wp-scripts start",
+        "build": "npm run postcss && tsc && wp-scripts build",
+        "postcss": "postcss ./src/[^_]*.css --dir ./build --verbose",
+        "lint-js": "wp-scripts lint-js --ext .js,.jsx,.ts,.tsx src/ --ignore-pattern 'src/@types/'",
+        "build-storybook": "build-storybook"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "npm run lint-js -- --fix",
+            "git add"
+        ],
+        "package.json": [
+            "wp-scripts lint-pkg-json"
+        ]
     },
     "wp-env": {
         "plugin-dir": "form-field-blocks",
