@@ -48,7 +48,7 @@
         "@typescript-eslint/eslint-plugin": "^2.22.0",
         "@typescript-eslint/parser": "^2.22.0",
         "@wordpress/browserslist-config": "2.6.0",
-        "@wordpress/scripts": "^7.1.2",
+        "@wordpress/scripts": "^31.2.0",
         "babel-loader": "^8.0.6",
         "cssnano": "^4.1.10",
         "husky": "^4.2.3",
